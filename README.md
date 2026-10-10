@@ -35,7 +35,9 @@ python -m unittest discover -s tests -v
 ```
 
 ## Run in Google Colab
-[**Open this project in Google Colab**](https://colab.research.google.com/github/veerkartik-ui/AI-Assisted-Advertisement-Generator/blob/main/notebooks/colab_demo.ipynb). Run the cells from top to bottom; the notebook clones this repository, installs dependencies, generates a PNG, and offers a download.
+[**Open this project in Google Colab**](https://colab.research.google.com/github/veerkartik-ui/AI-Assisted-Advertisement-Generator/blob/main/notebooks/colab_demo.ipynb). Run the cells from top to bottom; the notebook clones this repository, upgrades dependencies (including Pillow 10.1+ for scalable fallback fonts), generates a PNG, and offers a download.
+
+**If you saw tiny text in an earlier run:** close or reload the old Colab tab, then choose **Runtime → Disconnect and delete runtime** and **Runtime → Run all**. This ensures the latest generator and font library are used.
 
 ## Project structure
 
