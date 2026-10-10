@@ -35,7 +35,7 @@ python -m unittest discover -s tests -v
 ```
 
 ## Run in Google Colab
-Open `notebooks/colab_demo.ipynb` in [Google Colab](https://colab.research.google.com/). Run the cells from top to bottom; the notebook clones this repository, installs dependencies, generates a PNG, and offers a download.
+[**Open this project in Google Colab**](https://colab.research.google.com/github/veerkartik-ui/AI-Assisted-Advertisement-Generator/blob/main/notebooks/colab_demo.ipynb). Run the cells from top to bottom; the notebook clones this repository, installs dependencies, generates a PNG, and offers a download.
 
 ## Project structure
 
