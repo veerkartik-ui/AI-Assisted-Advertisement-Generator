@@ -11,7 +11,9 @@ class AdvertisementGeneratorTests(unittest.TestCase):
         self.assertEqual(analyze_inputs("PulseFit Protein", "Gym Goers", "bold")["category"], "fitness")
 
     def test_beauty_detection(self):
-        self.assertEqual(build_design_plan("GlowLeaf Vitamin C Serum", "Young Adults", "premium, clean").category, "beauty")
+        plan = build_design_plan("GlowLeaf Vitamin C Serum", "Young Adults", "premium, clean")
+        self.assertEqual(plan.category, "beauty")
+        self.assertEqual(plan.visual, "serum")
 
     def test_education_audience_weighting(self):
         self.assertEqual(build_design_plan("SkillSprint AI Course", "College Students", "sale, bold").category, "education")
