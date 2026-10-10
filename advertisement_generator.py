@@ -142,8 +142,15 @@ def build_design_plan(product: str, audience: str, requirements: str = "") -> De
         if hint_category == category and hint in audience_text:
             cta = hint_cta
             break
+
+    # Use a serum bottle for serum products instead of the generic cream jar.
+    product_text = normalize(product)
+    visual = rule["visual"]
+    if category == "beauty" and ("serum" in product_text or "vitamin c" in product_text):
+        visual = "serum"
+
     return DesignPlan(category, list(rule["palette"]), deterministic_choice(rule["taglines"], seed),
-                      cta, rule["visual"], typography, layout, int(analysis["confidence"]), list(analysis["matched"]))
+                      cta, visual, typography, layout, int(analysis["confidence"]), list(analysis["matched"]))
 
 
 def _font(size: int, bold: bool = False) -> ImageFont.ImageFont:
@@ -206,6 +213,38 @@ def _draw_visual(draw: ImageDraw.ImageDraw, plan: DesignPlan, center: tuple[int,
         _rounded(draw, (cx-64, cy-35, cx+64, cy+69), 14, accent)
         f = _font(22, True)
         draw.text((cx-_text_width(draw, "ACTIVE", f)//2, cy-3), "ACTIVE", font=f, fill=plan.palette[0])
+    elif plan.visual == "serum":
+        # Multi-part dropper bottle with glass highlights, liquid, and readable label.
+        draw.ellipse((cx-122, cy+168, cx+122, cy+211), fill=(24, 8, 25))
+        draw.rounded_rectangle((cx-99, cy-83, cx+99, cy+192), radius=28,
+                               fill=(178, 91, 143), outline=(247, 202, 226), width=5)
+        draw.rounded_rectangle((cx-89, cy+30, cx+89, cy+182), radius=18, fill=(133, 52, 105))
+        draw.rounded_rectangle((cx-48, cy-125, cx+48, cy-72), radius=12,
+                               fill=(225, 187, 211), outline=(247, 211, 231), width=3)
+        draw.rounded_rectangle((cx-34, cy-204, cx+34, cy-119), radius=15,
+                               fill=(47, 22, 49), outline=(219, 169, 202), width=3)
+        draw.rounded_rectangle((cx-39, cy-229, cx+39, cy-192), radius=16,
+                               fill=(237, 222, 232), outline=(255, 243, 250), width=2)
+        # Reflections make the bottle read as packaging rather than a flat rectangle.
+        draw.line((cx-75, cy-55, cx-75, cy+132), fill=(239, 174, 211), width=6)
+        draw.line((cx+73, cy-42, cx+73, cy+143), fill=(199, 127, 174), width=3)
+        # Warm cosmetic label with product identity and secondary information.
+        draw.rounded_rectangle((cx-82, cy-5, cx+82, cy+123), radius=9,
+                               fill=(250, 240, 232), outline=(255, 251, 246), width=2)
+        brand, brand_font = "GLOWLEAF", _font(17, True)
+        draw.text((cx-_text_width(draw, brand, brand_font)//2, cy+14),
+                  brand, font=brand_font, fill=(49, 24, 52))
+        hero, hero_font = "VITAMIN C", _font(18, True)
+        draw.text((cx-_text_width(draw, hero, hero_font)//2, cy+43),
+                  hero, font=hero_font, fill=(117, 43, 86))
+        detail, detail_font = "BRIGHTENING SERUM", _font(9, True)
+        draw.text((cx-_text_width(draw, detail, detail_font)//2, cy+72),
+                  detail, font=detail_font, fill=(91, 70, 83))
+        size_txt, size_font = "30 mL", _font(11)
+        draw.text((cx-_text_width(draw, size_txt, size_font)//2, cy+94),
+                  size_txt, font=size_font, fill=(91, 70, 83))
+        draw.ellipse((cx+116, cy-171, cx+138, cy-149), fill=accent)
+        draw.line((cx+110, cy-145, cx+81, cy-112), fill=accent, width=3)
     elif plan.visual == "jar":
         _rounded(draw, (cx-150, cy-100, cx+150, cy+105), 36, main)
         _rounded(draw, (cx-130, cy-130, cx+130, cy-91), 8, accent)
