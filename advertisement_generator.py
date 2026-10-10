@@ -157,8 +157,17 @@ def _font(size: int, bold: bool = False) -> ImageFont.ImageFont:
         try:
             return ImageFont.truetype(name, size=size)
         except OSError:
-            pass
-    return ImageFont.load_default()
+            continue
+
+    # Critical: Pillow's no-argument default font is tiny. Passing size keeps
+    # the hierarchy and line wrapping readable on minimal Colab runtimes.
+    try:
+        return ImageFont.load_default(size=size)
+    except TypeError as exc:
+        raise RuntimeError(
+            "No scalable font was found. Upgrade Pillow with "
+            "`%pip install --upgrade 'Pillow>=10.1.0'` and rerun this cell."
+        ) from exc
 
 
 def _text_width(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.ImageFont) -> int:
